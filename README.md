@@ -1,4 +1,4 @@
-# TENET
+# TENNET
 
 Member
 
