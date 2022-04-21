@@ -1,14 +1,14 @@
 require("dotenv").config();
-
 const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
 const express = require("express");
+const mongoose = require('mongoose');
 const app = express();
-
 const routes = require("./routes");
+
+const { PORT, MONGO_URI } = process.env;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,6 +23,14 @@ app.use(
 
 app.use(cookieParser());
 
+
+// 몽고디비 연결
+mongoose
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('mongodb connected!!'))
+  .catch(e => console.error(e));
+
+
 app.get("/", (req, res) => {
     res.send("TENNET Backend Server");
   });
@@ -32,8 +40,7 @@ app.get("/", (req, res) => {
 
 
 
-const HTTPS_PORT = process.env.PORT || 4000;
-const HTTP_PORT = process.env.PORT || 4000;
+
 
 let server;
 
@@ -46,10 +53,10 @@ let server;
 //   const credentials = { key: privateKey, cert: certificate };
 
 //   server = https.createServer(credentials, app);
-//   server.listen(HTTPS_PORT, () => console.log("https server runnning!!"));
+//   server.listen(PORT, () => console.log(`server runnning!! (PORT: ${PORT})`));
 
 // } else {
-server = app.listen(HTTP_PORT);
-console.log("http server runnning!!");
-// }
+server = app.listen(PORT, () => console.log(`server runnning!! (PORT: ${PORT})`));
+// };
+
 module.exports = server;
