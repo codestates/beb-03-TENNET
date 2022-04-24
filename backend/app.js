@@ -4,9 +4,10 @@ const https = require("https");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const app = express();
 const routes = require("./routes");
+const { userRouter, postRouter, tokenRouter, nftRouter } = require("./routes");
 
 const { PORT, MONGO_URI } = process.env;
 
@@ -17,30 +18,23 @@ app.use(
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS", "PATCH"],
+    methods: ["GET", "POST", "OPTIONS", "PATCH", "PUT"],
   })
 );
 
 app.use(cookieParser());
 
-
 // 몽고디비 연결
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('mongodb connected!!'))
-  .catch(e => console.error(e));
-
+  .then(() => console.log("mongodb connected!!"))
+  .catch((e) => console.error(e));
 
 app.get("/", (req, res) => {
-    res.send("TENNET Backend Server");
-  });
+  res.send("TENNET Backend Server");
+});
 
-
-
-
-
-
-
+app.use("/user/", userRouter);
 
 let server;
 
@@ -56,7 +50,9 @@ let server;
 //   server.listen(PORT, () => console.log(`server runnning!! (PORT: ${PORT})`));
 
 // } else {
-server = app.listen(PORT, () => console.log(`server runnning!! (PORT: ${PORT})`));
+server = app.listen(PORT, () =>
+  console.log(`server runnning!! (PORT: ${PORT})`)
+);
 // };
 
 module.exports = server;

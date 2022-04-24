@@ -2,22 +2,19 @@ const { Router } = require("express");
 const userRouter = Router();
 const mongoose = require("mongoose");
 const { isValidObjectId } = require("mongoose");
-const { User, Post } = require("../models");
-
+const { User } = require("../models/User");
 require("dotenv").config();
 
-userRouter.post("/login", async (req, res) => {
+userRouter.get("/:address", async (req, res) => {
+  //userCheck&Info
   try {
-    const { address, privateKey } = req.body;
+    const { address } = req.params;
+    console.log(address);
     const userAddressCheck = await User.exists({ address: address });
-    if (!userAddressCheck)
-      return res.status(400).send({ err: "address is not exists." });
-    const user = await User.findOne({
-      address: address,
-      privateKey: privateKey,
-    });
-    if (!user) return res.status(400).send({ err: " privateKey is wrong." });
-    if (user) return res.status(200).send({ user, msg: "Sucess Login" });
+    if (!userAddressCheck == false)
+      return res.status(400).send({ err: "가입되어있지않은 주소입니다." });
+    const user = await User.findOne({ address: address });
+    res.send({ user });
   } catch (err) {
     console.log(err);
   }
@@ -36,31 +33,56 @@ userRouter.post("/signup", async (req, res) => {
     const nickNameCheck = await User.exists({ nickName: nickName });
     console.log(userAddressCheck);
     console.log(nickNameCheck);
+    console.log(!userAddressCheck);
+    console.log(!nickNameCheck);
 
-    if (!userAddressCheck || !nickNameCheck)
+    if (!userAddressCheck == false || !nickNameCheck == false)
       return res
         .status(400)
         .send({ err: "이미 존재하는 주소 혹은 닉네임 입니다." });
-    function signUp(result, err) {
-      const user = new User({
-        address: address.toString(),
-        nickName,
-        privateKey: privateKey,
-      });
-      user.save();
-      return res.send({ user, message: "OK" });
-    }
+    const user = new User({
+      address: address.toString(),
+      nickName,
+      privateKey: privateKey,
+    });
+    user.save();
+    return res.send({ user, message: "OK" });
   } catch (err) {
     console.log({ err });
   }
 });
 
-userRouter.get("/:userId/post", async (req, res) => {
-  const { userId } = req.params;
+userRouter.put("/mypage/update/:address", async (req, res) => {
+  //userInfo update
+  const { address } = req.params;
+  const { nickName, image } = req.body;
+
+  const nickNameCheck = await User.exists({ nickName: nickName });
+
+  if (!nickNameCheck == false)
+    return res
+      .status(400)
+      .send({ err: "이미 존재하는 주소 혹은 닉네임 입니다." });
+
+  const userData = await User.findOneAndUpdate(
+    { address: address },
+    { nickName, image },
+    { new: true }
+  );
+  console.log(userData);
+  return res.send({ userData });
+});
+
+userRouter.get("/post/:nickName", async (req, res) => {
+  const { nickName } = req.params;
   try {
-    if (!isValidObjectId(userId))
-      return res.status(400).send({ err: "invalid userId" });
-    const posts = await Post.find({ userId: userId });
+    const userNickNameCheck = await User.exists({ nickName: nickName });
+    if (!userNickNameCheck == false)
+      return res
+        .status(400)
+        .send({ err: "해당 닉네임으로 게시물이 존재하지않습니다." });
+
+    const posts = await posts.find({ nickName: nickName });
     return res.status(200).send({ posts });
   } catch (err) {
     console.log(err);
@@ -70,3 +92,20 @@ userRouter.get("/:userId/post", async (req, res) => {
 module.exports = {
   userRouter,
 };
+
+/* userRouter.post("/login", async (req, res) => {
+  try {
+    const { address, privateKey } = req.body;
+    const userAddressCheck = await User.exists({ address: address });
+    if (!userAddressCheck)
+      return res.status(400).send({ err: "address is not exists." });
+    const user = await User.findOne({
+      address: address,
+      privateKey: privateKey,
+    });
+    if (!user) return res.status(400).send({ err: " privateKey is wrong." });
+    if (user) return res.status(200).send({ user, msg: "Sucess Login" });
+  } catch (err) {
+    console.log(err);
+  }
+}); */
