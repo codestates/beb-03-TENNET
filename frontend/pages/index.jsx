@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Seo from '../components/Seo';
 import Header from '../components/Header';
 import SignUp from '../components/SignUp';
 import Feed from '../components/Feed';
@@ -14,33 +15,36 @@ const style = {
 };
 
 export default function Home() {
-  const [registered, setRegistered] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(false);
   const [nickname, setNickname] = useState('');
   const [url, setUrl] = useState('');
+  const [account, setAccount] = useState('');
   // const [users, setUsers] = useState([]);
-
-  console.log(registered);
+  // console.log(isSignIn);
 
   return (
     <div className={style.wrapper}>
-      <Header />
-      {registered ? (
+      <Seo title={'Home'} />
+      <Header nickname={nickname} url={url} account={account} />
+
+      {isSignIn ? (
         <div className={style.homeWrapper}>
-          Home입니다.
-          <Sidebar />
+          <Sidebar nickname={nickname} url={url} />
           <div className={style.main}>
-            <Feed />
+            <Feed isSignIn={isSignIn} nickname={nickname} url={url} />
           </div>
           <RightSidebar />
         </div>
       ) : (
         <div className={style.signupContainer}>
           <SignUp
-            setRegistered={setRegistered}
+            isSignIn={isSignIn}
+            setIsSignIn={setIsSignIn}
             nickname={nickname}
             setNickname={setNickname}
             url={url}
             setUrl={setUrl}
+            setAccount={setAccount}
           />
         </div>
       )}

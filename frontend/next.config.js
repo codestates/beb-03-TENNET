@@ -13,7 +13,20 @@ const nextConfig = {
       'yt3.ggpht.com',
       'media-exp1.licdn.com',
       'scontent-lax3-1.xx.fbcdn.net',
+      'via.placeholder.com',
     ],
+  },
+  webpack5: true,
+  webpack: (config) => {
+    config.resolve.fallback = {
+      fs: false,
+      http: false,
+      https: false,
+      crypto: false,
+      stream: false,
+    };
+
+    return config;
   },
 };
 
