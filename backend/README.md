@@ -1,6 +1,9 @@
 # Backend Server
 
-## db 초기화
+## DB 초기화
+일반적으로 아래 순서를 지킬것
 ```
-node seed.js
+node seedUsers.js
+node seedPosts.js
+node seedComments.js
 ```

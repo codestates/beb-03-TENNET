@@ -21,5 +21,8 @@
     "nodemon": "^2.0.15",
     "parser": "^0.1.4",
     "web3": "^1.7.3"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^6.2.0"
   }
 }
