@@ -1,15 +1,16 @@
 require("dotenv").config();
-const fs = require("fs");
-const https = require("https");
+// const fs = require("fs");
+// const https = require("https");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const routes = require("./routes");
 const { userRouter, postRouter, tokenRouter, nftRouter } = require("./routes");
 
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGO_URI, MONGO_ACC_URI } = process.env;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,21 +25,38 @@ app.use(
 
 app.use(cookieParser());
 
-// 몽고디비 연결
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("mongodb connected!!"))
-  .catch((e) => console.error(e));
 
+// 몽고디비 연결
+// mongoose
+//   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log("mongodb connected!!"))
+//   .catch((e) => console.error(e));
+
+const client = new MongoClient(MONGO_ACC_URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+client.connect(async err => {
+  if (err) {throw err;}
+  else {
+    console.log("mongodb connected!!");
+    // const collection = client.db("sample_analytics").collection("accounts");
+    // const one = await collection.findOne({account_id:278603});
+    // console.log(one);
+    // client.close();
+    // console.log("mongodb connection closed!!");
+  };
+});
+
+
+// routes
 app.get("/", (req, res) => {
   res.send("TENNET Backend Server");
 });
 
 app.use("/user/", userRouter);
 
-let server;
 
-//// HTTPS 서버 주석
+//// HTTPS/HTTP SERVER
+let server;
 
 // if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
 
