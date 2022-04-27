@@ -45,6 +45,11 @@ async function seedDB() {
                 ipfs: ipfs,
                 title: title,
                 contents: contents,
+                contractAddress: "0x0000000000000000000000000000000000TENNET",
+                tokenId: `${i}`,
+                editList: [],
+                parentId: null,
+                childrenIds: [],
                 createdAt: new Date(),
                 updatedAt: new Date()
             }
