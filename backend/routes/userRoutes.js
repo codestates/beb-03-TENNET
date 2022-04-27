@@ -2,7 +2,7 @@ const { Router } = require("express");
 const userRouter = Router();
 const mongoose = require("mongoose");
 const { isValidObjectId } = require("mongoose");
-const { User } = require("../models/User");
+const { User } = require("../models/user");
 require("dotenv").config();
 
 userRouter.get("/:address", async (req, res) => {
