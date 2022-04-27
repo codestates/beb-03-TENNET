@@ -1,6 +1,6 @@
 require("dotenv").config();
-const fs = require("fs");
-const https = require("https");
+// const fs = require("fs");
+// const https = require("https");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
@@ -9,7 +9,7 @@ const app = express();
 const routes = require("./routes");
 const { userRouter, postRouter, tokenRouter, nftRouter } = require("./routes");
 
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGO_URI, MONGO_ACC_URI } = process.env;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,21 +24,25 @@ app.use(
 
 app.use(cookieParser());
 
+
 // 몽고디비 연결
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGO_ACC_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("mongodb connected!!"))
   .catch((e) => console.error(e));
 
+
+// routes
 app.get("/", (req, res) => {
   res.send("TENNET Backend Server");
 });
 
 app.use("/user/", userRouter);
+app.use("/post/", postRouter);
 
+
+//// HTTPS/HTTP SERVER
 let server;
-
-//// HTTPS 서버 주석
 
 // if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
 
