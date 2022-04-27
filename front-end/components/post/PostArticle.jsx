@@ -1,3 +1,5 @@
+import { Sidebar } from 'components';
+
 export const PostArticle = ({ category, title, children }) => {
   return (
     <div className='px-4 py-24'>

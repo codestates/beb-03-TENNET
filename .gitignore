@@ -34,6 +34,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Contentlayer
+.contentlayer
+
 # other
 yarn.lock
 yarn-error.log
