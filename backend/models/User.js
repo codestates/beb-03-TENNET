@@ -2,13 +2,14 @@ const { Schema, model } = require("mongoose");
 
 const UserSchema = new Schema(
   {
+    nickName: { type: String, required: true }, // 유니크 속성 안주고 저장할때 중복여부 확인할것임
     address: { type: String, required: true, unique: true },
-    nickName: { type: String, required: true, unique: true },
-    privateKey: String,
-    image: String,
+    image: { type: String },
+    privateKey: { type: String },
   },
   { timestamps: true }
 );
 
-const User = model("user", UserSchema);
-module.exports = { User };
+const User = model("User", UserSchema);
+
+module.exports = User;
