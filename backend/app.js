@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const routes = require("./routes");
 const { userRouter, postRouter, tokenRouter, nftRouter } = require("./routes");
 
 const { PORT, MONGO_URI, MONGO_ACC_URI } = process.env;
