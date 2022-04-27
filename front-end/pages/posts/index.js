@@ -1,25 +1,25 @@
-import { allResources } from 'contentlayer/generated';
+import { allPosts } from 'contentlayer/generated';
 import { NextSeo } from 'next-seo';
 
-import { ResourceList, MainLayout } from 'components';
+import { PostList, MainLayout } from 'components';
 import { pick } from 'utils';
 
-const Resources = ({ resources }) => {
+const Posts = ({ posts }) => {
   return (
     <MainLayout>
       <NextSeo
-        title='Resources'
+        title='Posts'
         description='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
       />
-      <ResourceList resources={resources} />
+      <PostList posts={posts} />
     </MainLayout>
   );
 };
 
-export default Resources;
+export default Posts;
 
 export function getStaticProps() {
-  const resources = allResources
+  const posts = allPosts
     .map((resource) =>
       pick(resource, [
         'slug',
@@ -37,5 +37,5 @@ export function getStaticProps() {
         Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
     );
 
-  return { props: { resources } };
+  return { props: { posts } };
 }

@@ -1,4 +1,4 @@
-export const ResourceArticle = ({ category, title, children }) => {
+export const PostArticle = ({ category, title, children }) => {
   return (
     <div className='px-4 py-24'>
       <div className='mx-auto max-w-prose'>

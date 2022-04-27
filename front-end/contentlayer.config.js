@@ -31,9 +31,9 @@ const Author = defineNestedType(() => ({
   },
 }));
 
-const Resource = defineDocumentType(() => ({
-  name: 'Resource',
-  filePathPattern: 'resources/*.mdx',
+const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: 'posts/*.mdx',
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -52,7 +52,7 @@ const Resource = defineDocumentType(() => ({
 
 const contentLayerConfig = makeSource({
   contentDirPath: 'content',
-  documentTypes: [Resource],
+  documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

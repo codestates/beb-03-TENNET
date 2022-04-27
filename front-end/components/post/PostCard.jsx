@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { convertTime } from 'utils';
 
-export const ResourceCard = ({
+export const PostCard = ({
   title,
   description,
   slug,
@@ -32,7 +32,7 @@ export const ResourceCard = ({
           </h1>
           <p className='mb-3 leading-relaxed'>{description}</p>
           <div className='flex flex-wrap items-center '>
-            <Link href={`/resources/${slug}`}>
+            <Link href={`/posts/${slug}`}>
               <a className='inline-flex items-center text-indigo-500 md:mb-2 lg:mb-0'>
                 Read More
                 <svg

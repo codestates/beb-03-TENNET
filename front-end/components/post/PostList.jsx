@@ -1,11 +1,11 @@
-import { ResourceCard } from 'components';
+import { PostCard } from 'components';
 
-export const ResourceList = ({ resources }) => {
+export const PostList = ({ posts }) => {
   return (
     <section className='body-font text-gray-600'>
       <div className='container mx-auto px-5 py-24'>
         <div className='-m-4 flex flex-wrap'>
-          {resources.map(
+          {posts.map(
             ({
               title,
               description,
@@ -15,7 +15,7 @@ export const ResourceList = ({ resources }) => {
               publishedAt,
               readingTime,
             }) => (
-              <ResourceCard
+              <PostCard
                 key={slug}
                 title={title}
                 description={description}

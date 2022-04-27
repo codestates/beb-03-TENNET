@@ -22,8 +22,8 @@ export const Nav = () => {
           </a>
         </Link>
         <nav className='flex flex-wrap items-center justify-center text-base md:ml-auto'>
-          <Link href='/resources'>
-            <a className='mr-5 hover:text-gray-900'>Resources</a>
+          <Link href='/posts'>
+            <a className='mr-5 hover:text-gray-900'>Posts</a>
           </Link>
         </nav>
       </div>
