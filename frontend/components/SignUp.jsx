@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
-import logoImage from '../public/assets/logoicon.png';
+import Image from 'next/image'
+import React, { useState, useEffect } from 'react'
+import logoImage from '../public/assets/logoicon.png'
 
 const style = {
   wrapper: `flex flex-col p-4 justify-center items-center h-full w-full bg-[#252526] w-min h-min rounded-2xl`,
@@ -13,7 +13,7 @@ const style = {
   inputField: `bg-transparent flex-1 m-2 outline-none text-white px-1 w-4`,
   randomUrl: `h-full bg-[#2d2d2d] hover:bg-[#252626] text-white px-2 py-1 mx-1 hover:px-3 rounded-full cursor-pointer duration-[0.2s] ease-in-out`,
   submitButton: `bg-[#3a3b3d] text-white font-semibold px-4 py-2 hover:px-6 rounded-full cursor-pointer duration-[0.2s] ease-in-out`,
-};
+}
 
 export default function SignUp({
   setRegistered,
@@ -21,32 +21,34 @@ export default function SignUp({
   setNickname,
   url,
   setUrl,
+  account,
+  setAccount,
 }) {
   //- 닉네임 중복확인 구현 필요.
 
-  const [account, setAccount] = useState('');
+  // const [account, setAccount] = useState('')
   const [randomProfileImageUrl, setRandomProfileImageUrl] = useState(
     'data:image/jpeg;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
-  );
+  )
 
   const generateRandomProfileImageUrl = () => {
     setRandomProfileImageUrl(
       `https://avatars.dicebear.com/api/pixel-art-neutral/${Math.floor(
         Math.random() * 100
       )}.svg`
-    );
-    setUrl(randomProfileImageUrl);
-  };
+    )
+    setUrl(randomProfileImageUrl)
+  }
 
   const createUser = async () => {
-    let networkId = await window.klaytn.networkVersion;
+    let networkId = await window.klaytn.networkVersion
 
     if (networkId == 1001) {
-      const wallet = await window.klaytn.enable();
-      setAccount(wallet[0]);
-      setRegistered(true);
+      const wallet = await window.klaytn.enable()
+      setAccount(wallet[0])
+      setRegistered(true)
     } else {
-      alert('바오밥 테스트넷으로 로그인 해주십시오');
+      alert('바오밥 테스트넷으로 로그인 해주십시오')
     }
     // try {
     //   await fetch(`/api/createUser`, {
@@ -63,13 +65,13 @@ export default function SignUp({
     // } catch (error) {
     //   console.error(error);
     // }
-  };
+  }
 
   useEffect(() => {
     window.klaytn.on('accountsChanged', (account) => {
-      setAccount(account[0]);
-    });
-  });
+      setAccount(account[0])
+    })
+  })
 
   return (
     <div className={style.wrapper}>
@@ -111,7 +113,7 @@ export default function SignUp({
             <div
               className={style.randomUrl}
               onClick={() => {
-                generateRandomProfileImageUrl();
+                generateRandomProfileImageUrl()
               }}
             >
               랜덤 생성
@@ -120,12 +122,12 @@ export default function SignUp({
         </div>
         <button
           className={style.submitButton}
-          type='button'
+          type="button"
           onClick={createUser}
         >
           가입하기
         </button>
       </form>
     </div>
-  );
+  )
 }
