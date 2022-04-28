@@ -4,6 +4,7 @@ const nextConfig = withContentlayer({
   reactStrictMode: true,
   images: {
     domains: [
+      'source.unsplash.com',
       'images.unsplash.com',
       'prettygood236.github.io',
       'avatars.dicebear.com',

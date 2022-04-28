@@ -32,7 +32,13 @@ export const PostCard = ({
           </h1>
           <p className='mb-3 leading-relaxed'>{description}</p>
           <div className='flex flex-wrap items-center '>
-            <Link href={`/posts/${slug}`}>
+            <Link
+              href={{
+                pathname: `/posts/${slug}`,
+                query: { posts: JSON.stringify(title) },
+              }}
+              // as={`/posts/${slug}]`}
+            >
               <a className='inline-flex items-center text-indigo-500 md:mb-2 lg:mb-0'>
                 Read More
                 <svg

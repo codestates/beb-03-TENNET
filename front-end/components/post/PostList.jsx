@@ -20,7 +20,9 @@ export const PostList = ({ posts }) => {
                 title={title}
                 description={description}
                 slug={slug}
-                image={image}
+                image={
+                  image || `https://source.unsplash.com/featured/?${category}`
+                }
                 category={category}
                 dateTime={publishedAt}
                 date={publishedAt}

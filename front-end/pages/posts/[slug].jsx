@@ -2,8 +2,8 @@ import { allPosts } from 'contentlayer/generated';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { CodePen } from 'mdx-embed';
 import { NextSeo } from 'next-seo';
-
 import { PostArticle, MainLayout } from 'components';
+import { useRouter } from 'next/router';
 
 const mdxComponents = {
   CodePen,
@@ -11,6 +11,14 @@ const mdxComponents = {
 
 const Post = ({ resource }) => {
   const MDXContent = useMDXComponent(resource.body.code);
+
+  // console.log(resource);
+
+  // const router = useRouter();
+  // const { abcdposts } = router.query;
+  // const currentPost = JSON.parse(abcdposts);
+  // console.log(abcdposts);
+  // console.log(currentPost);
 
   return (
     <MainLayout>

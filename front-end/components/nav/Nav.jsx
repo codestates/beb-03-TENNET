@@ -56,12 +56,12 @@ export const Nav = ({ nickname, image, account }) => {
               <AiFillHome className={style.centerNavIcon} />
             </div>
           </Link>
-          <Link href='/posts'>
+          <Link href='/'>
             <div className={style.centerNavIconContainer}>
               <BsDisplay className={style.centerNavIcon} />
             </div>
           </Link>
-          <Link href='/posts'>
+          <Link href='/'>
             <div className={style.centerNavIconContainer}>
               <RiGroup2Line className={style.centerNavIcon} />
             </div>

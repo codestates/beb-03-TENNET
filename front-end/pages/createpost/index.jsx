@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
 import { MainLayout } from 'components';
+import { useState } from 'react';
 
 const style = {
-  wysiwygEditorWrapper:
-    'flex flex-col items-center justify-center space-y-6 mt-16 ',
+  createPostWrapper: 'flex flex-col items-center justify-center mt-20',
+  titleArea: 'w-1/2 border border-[lightgrey] rounded-md mb-4',
 };
 
 export const WysiwygEditor = dynamic(
@@ -14,11 +15,12 @@ export const WysiwygEditor = dynamic(
 );
 
 export default function CreatePost() {
+  const [postData, setPostData] = useState({});
+  console.log(postData);
+
   return (
     <MainLayout>
-      <div className={style.wysiwygEditorWrapper}>
-        <WysiwygEditor />
-      </div>
+      <WysiwygEditor setPostData={setPostData} />
     </MainLayout>
   );
 }

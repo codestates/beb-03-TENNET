@@ -23,12 +23,17 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 
 const style = {
+  createPostWrapper: 'flex flex-col mt-20 space-y-6',
+  titleWrapper: 'flex items-center justify-center',
+  titleArea: 'w-5/12 border border-[lightgrey] rounded-m',
+  wysiwygEditorWrapper: 'flex flex-col items-center justify-center space-y-6',
   button_default:
     'py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700',
 };
 
-export default function WysiwygEditor() {
+export default function WysiwygEditor({ setPostData }) {
   const editorRef = useRef(null);
+  const titleRef = useRef(null);
 
   const toolbarItems = [
     ['heading', 'bold', 'italic', 'strike'],
@@ -105,19 +110,18 @@ export default function WysiwygEditor() {
     return randomName;
   };
 
-  const getContent = () => {
+  const getPost = () => {
     const editorIns = editorRef.current.getInstance();
     const contentHtml = editorIns.getHTML();
     const contentMarkdown = editorIns.getMarkdown();
-
-    console.log(contentHtml);
-    console.log(contentMarkdown);
-  };
-
-  const validationCheck = () => {
     const title = titleRef.current.value.trim();
-    const content = getMarkDown();
-    if (title !== '' || content !== '') {
+
+    if (title !== '' || contentHtml !== '') {
+      // console.log(title);
+      console.log(contentHtml);
+      console.log(contentMarkdown);
+      setPostData({ head: title, body: contentMarkdown });
+
       //- DB에 저장
     } else {
       console.error();
@@ -125,32 +129,37 @@ export default function WysiwygEditor() {
   };
 
   return (
-    <>
-      {/* <textarea
-        type='title'
-        placeholder='제목을 입력하세요.'
-        className='w-1/2'
-      ></textarea> */}
-      <Editor
-        ref={editorRef}
-        initialValue='<b>내용을 입력하세요. 오른쪽은 작성 결과를 보여줍니다.</b>'
-        initialEditType='markdown' // wysiwyg & markdown
-        hideModeSwitch={true}
-        height='600px'
-        theme={''} // '' & 'dark'
-        usageStatistics={false}
-        toolbarItems={toolbarItems}
-        previewStyle='vertical'
-        // placeholder={'내용을 입력하세요'}
-        plugins={[colorSyntax]}
-      />
-      <button
-        type='button'
-        className={style.button_default}
-        onClick={getContent}
-      >
-        작성하기
-      </button>
-    </>
+    <div className={style.createPostWrapper}>
+      <div className={style.titleWrapper}>
+        <textarea
+          ref={titleRef}
+          className={style.titleArea}
+          type='title'
+          placeholder='제목을 입력하세요.'
+        ></textarea>
+      </div>
+      <div className={style.wysiwygEditorWrapper}>
+        <Editor
+          ref={editorRef}
+          initialValue='<b>내용을 입력하세요. 오른쪽은 작성 결과를 보여줍니다.</b>'
+          initialEditType='markdown' // wysiwyg & markdown
+          hideModeSwitch={true}
+          height='600px'
+          theme={''} // '' & 'dark'
+          usageStatistics={false}
+          toolbarItems={toolbarItems}
+          previewStyle='vertical'
+          // placeholder={'내용을 입력하세요'}
+          plugins={[colorSyntax]}
+        />
+        <button
+          type='button'
+          className={style.button_default}
+          onClick={getPost}
+        >
+          작성하기
+        </button>
+      </div>
+    </div>
   );
 }
