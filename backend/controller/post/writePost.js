@@ -25,7 +25,7 @@ module.exports = {
         };
         // tokenId 가 해당 컨트렉트에서 유일한가? (프론트에서 얼마나 검증되는지 확인후 구현하자)
 
-    // 도큐먼트 생성하기
+    // 도큐먼트 생성하고 응답하기
 
         const newPost = new Post({
             user_id: userId,
@@ -35,8 +35,6 @@ module.exports = {
             contractAddress: contractAddress,
             tokenId: tokenId,
         });
-    
-    // 응답하기
 
         try {
             await newPost.save();
