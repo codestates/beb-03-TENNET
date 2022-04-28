@@ -1,0 +1,8 @@
+package.json
+.env.local
+*.md
+*.html
+*.scss
+*.css
+*.yml
+_js/lib
