@@ -2,90 +2,106 @@ const { Router } = require("express");
 const userRouter = Router();
 const mongoose = require("mongoose");
 const { isValidObjectId } = require("mongoose");
-const { User } = require("../models/user");
+const { User, Post, Comment } = require("../models");
 require("dotenv").config();
 
 userRouter.get("/:address", async (req, res) => {
   //userCheck&Info
   try {
     const { address } = req.params;
-    console.log(address);
     const userAddressCheck = await User.exists({ address: address });
-    if (!userAddressCheck == false)
+    if (!userAddressCheck)
       return res.status(400).send({ err: "가입되어있지않은 주소입니다." });
     const user = await User.findOne({ address: address });
-    res.send({ user });
+    res.send({ data:user, message: "success" });
   } catch (err) {
-    console.log(err);
+    res.status(500).send(err);
   }
 });
 
 userRouter.post("/signup", async (req, res) => {
-  let { address, nickName, privateKey } = req.body;
-  console.log(nickName, privateKey, address);
+  let { address, nickName, image, /*privateKey*/ } = req.body;
   if (!address) return res.status(400).send({ err: "address is required!" });
   if (!nickName) return res.status(400).send({ err: "nickName is required!" });
-  if (!privateKey)
-    return res.status(400).send({ err: "privateKey is required!" });
+  // if (!privateKey)
+    // return res.status(400).send({ err: "privateKey is required!" });
 
   try {
     const userAddressCheck = await User.exists({ address: address });
     const nickNameCheck = await User.exists({ nickName: nickName });
-    console.log(userAddressCheck);
-    console.log(nickNameCheck);
-    console.log(!userAddressCheck);
-    console.log(!nickNameCheck);
 
-    if (!userAddressCheck == false || !nickNameCheck == false)
+    if (!userAddressCheck == false)
       return res
         .status(400)
-        .send({ err: "이미 존재하는 주소 혹은 닉네임 입니다." });
+        .send({ err: "이미 존재하는 주소 입니다." });
+    if (!nickNameCheck == false)
+      return res
+        .status(400)
+        .send({ err: "이미 존재하는 닉네임 입니다." });
     const user = new User({
       address: address.toString(),
       nickName,
-      privateKey: privateKey,
+      image
+      // privateKey: privateKey,
     });
     user.save();
-    return res.send({ user, message: "OK" });
+    return res.send({ data: user, message: "OK" });
   } catch (err) {
-    console.log({ err });
+    return res.status(500).send(err);
   }
 });
 
-userRouter.put("/mypage/update/:address", async (req, res) => {
+// 주소와 버디로 유저정보 업뎃
+userRouter.patch("/update/:address", async (req, res) => {
   //userInfo update
   const { address } = req.params;
   const { nickName, image } = req.body;
 
-  const nickNameCheck = await User.exists({ nickName: nickName });
-
-  if (!nickNameCheck == false)
+  const userCheck = await User.exists({ address: address });
+  if (!userCheck)
     return res
       .status(400)
-      .send({ err: "이미 존재하는 주소 혹은 닉네임 입니다." });
+      .send({ err: "파라미터에 담긴 지갑주소와 일치하는 유저를 찾을수 없다." });
 
-  const userData = await User.findOneAndUpdate(
+  const updatedUser = await User.findOneAndUpdate(
     { address: address },
     { nickName, image },
     { new: true }
   );
-  console.log(userData);
-  return res.send({ userData });
+  return res.send({ data: updatedUser, message: "OK" });
 });
 
-userRouter.get("/post/:nickName", async (req, res) => {
-  const { nickName } = req.params;
+// 주소로 게시글 조회하기
+userRouter.get("/myposts/:address", async (req, res) => {
+  const { address } = req.params;
   try {
-    const userNickNameCheck = await User.exists({ nickName: nickName });
-    if (!userNickNameCheck == false)
+    const userCheck = await User.exists({ address: address });
+    if (!userCheck)
       return res
         .status(400)
-        .send({ err: "해당 닉네임으로 게시물이 존재하지않습니다." });
-
-    const posts = await posts.find({ nickName: nickName });
-    return res.status(200).send({ posts });
+        .send({ err: "파라미터에 담긴 지갑주소와 일치하는 유저를 찾을수 없다." });
+    const user = await User.findOne({ address: address });
+    const posts = await Post.find({ user_id: user._id });
+    res.status(200).send({ data: posts, message: "OK" });
   } catch (err) {
-    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+// 주소로 댓글 조회하기
+userRouter.get("/mycomments/:address", async (req, res) => {
+  const { address } = req.params;
+  try {
+    const userCheck = await User.exists({ address: address });
+    if (!userCheck)
+      return res
+        .status(400)
+        .send({ err: "파라미터에 담긴 지갑주소와 일치하는 유저를 찾을수 없다." });
+    const user = await User.findOne({ address: address });
+    const comments = await Comment.find({ user_id: user._id });
+    res.status(200).send({ data: comments, message: "OK" });
+  } catch (err) {
+    res.status(500).send(err);
   }
 });
 
