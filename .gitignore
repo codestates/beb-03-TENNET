@@ -5,8 +5,6 @@ node_modules
 .pnp
 .pnp.js
 
-.env.local
-.env
 
 # testing
 coverage
@@ -29,10 +27,16 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # vercel
 .vercel
+
+# Contentlayer
+.contentlayer
 
 # other
 yarn.lock
