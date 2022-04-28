@@ -27,7 +27,27 @@ const style = {
   balanceText: `text-white text-center font-bold`,
 };
 
-export const Nav = ({ nickname, image, account }) => {
+export const Nav = ({
+  nickname,
+  setNickname,
+  image,
+  setImage,
+  account,
+  setAccount,
+  setIsSignIn,
+}) => {
+  // (() => {
+  //   console.log('nickname', nickname);
+  //   console.log('image', image);
+  //   console.log('account', account);
+  // })();
+  const buttonHandler = () => {
+    if (nickname && image && account) {
+      alert('이미 로그인 하셨습니다.');
+      return;
+    }
+  };
+
   return (
     <div className={style.wrapper}>
       <div className={style.headerLeftContainer}>
@@ -75,21 +95,23 @@ export const Nav = ({ nickname, image, account }) => {
       </div>
       {nickname && image && account ? (
         <div className={style.headerRightContainer}>
-          <div
-            className={`${style.userInfoContainer} ${style.headerRightButton}`}
-          >
-            <Image
-              className={style.userImage}
-              src={
-                image ||
-                'data:image/jpeg;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
-              }
-              height={20}
-              width={20}
-              alt='user image'
-            />
-            <div className={style.userNickname}>{nickname}</div>
-          </div>
+          <Link href='/mypage'>
+            <div
+              className={`${style.userInfoContainer} ${style.headerRightButton}`}
+            >
+              <Image
+                className={style.userImage}
+                src={
+                  image ||
+                  'data:image/jpeg;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+                }
+                height={20}
+                width={20}
+                alt='user image'
+              />
+              <div className={style.userNickname}>{nickname}</div>
+            </div>
+          </Link>
           <div
             className={`${style.balanceContainer} ${style.headerRightButton}`}
           >
@@ -107,11 +129,13 @@ export const Nav = ({ nickname, image, account }) => {
         <div className={style.headerRightContainer}>
           <div
             className={`${style.userInfoContainer} ${style.headerRightButton}`}
+            onClick={() => setIsSignIn(true)}
           >
             <div className={style.userNickname}>SignIn</div>
           </div>
           <div
             className={`${style.balanceContainer} ${style.headerRightButton}`}
+            onClick={() => setIsSignIn(true)}
           >
             <div className={style.balanceText}>SignUp</div>
           </div>
