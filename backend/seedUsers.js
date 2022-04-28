@@ -24,13 +24,13 @@ async function seedDB() {
             const nickName = faker.name.firstName();
             const address = "0x000000000000000000000000000000000000000" + `${i}`;
             const image = faker.image.avatar();
-            const privateKey = "0x000000000000000000000000000000000000000000000000000000000000000" + `${i}`;
+            // const privateKey = "0x000000000000000000000000000000000000000000000000000000000000000" + `${i}`;
             
             const user = {
                 nickName: nickName,
                 address: address,
                 image: image,
-                privateKey: privateKey,
+                // privateKey: privateKey,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }
